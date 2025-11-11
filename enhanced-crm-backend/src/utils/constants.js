@@ -1,0 +1,1 @@
+module.exports = { ROLES: ['Admin','Manager','Sales','Support'] };
