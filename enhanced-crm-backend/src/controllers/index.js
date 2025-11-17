@@ -1,0 +1,16 @@
+module.exports = {
+  auth: require('./auth.controller'),
+  users: require('./user.controller'),
+  clients: require('./client.controller'),
+  contacts: require('./contact.controller'),
+  leads: require('./lead.controller'),
+  interactions: require('./interaction.controller'),
+  contracts: require('./contract.controller'),
+  notifications: require('./notification.controller'),
+  dashboard: require('./dashboard.controller'),
+  reports: require('./report.controller'),
+  automation: require('./automation.controller'),
+  ai: require('./ai.controller'),
+  files: require('./file.controller'),
+  admin: require('./admin.controller'),
+}

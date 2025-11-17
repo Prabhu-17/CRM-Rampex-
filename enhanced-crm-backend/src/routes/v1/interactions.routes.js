@@ -1,9 +1,38 @@
-const express = require('express');
-const router = express.Router();
-const inter = require('../../controllers/interaction.controller');
-const auth = require('../../middlewares/auth.middleware');
+const expressInteraction = require('express')
+const interactionRouter = expressInteraction.Router()
+const InteractionController = require('../controllers/interaction.controller')
+const authInteraction = require('../middlewares/permission.middleware')
+const paginateInteraction = require('../middlewares/paginate.middleware')
+const activityLogInteraction = require('../middlewares/activityLog.middleware')
 
-router.post('/', auth, inter.create);
-router.get('/client/:clientId', auth, inter.listForClient);
+interactionRouter.get(
+  '/',
+  authInteraction('interactions:read'),
+  paginateInteraction,
+  InteractionController.getAllInteractions
+)
+interactionRouter.get(
+  '/:id',
+  authInteraction('interactions:read'),
+  InteractionController.getInteractionById
+)
+interactionRouter.post(
+  '/',
+  authInteraction('interactions:create'),
+  activityLogInteraction('interaction', 'create'),
+  InteractionController.createInteraction
+)
+interactionRouter.put(
+  '/:id',
+  authInteraction('interactions:update'),
+  activityLogInteraction('interaction', 'update'),
+  InteractionController.updateInteraction
+)
+interactionRouter.delete(
+  '/:id',
+  authInteraction('interactions:delete'),
+  activityLogInteraction('interaction', 'delete'),
+  InteractionController.deleteInteraction
+)
 
-module.exports = router;
+module.exports = interactionRouter

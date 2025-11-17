@@ -2,12 +2,390 @@ openapi: 3.0.0
 info:
   title: Enhanced CRM API
   version: 1.0.0
+  description: |
+    CRM backend.
+    Features automation, workflows, AI integrations, and modular architecture.
+
+servers:
+  - url: /api/v1
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Clients
+  - name: Contacts
+  - name: Leads
+  - name: Interactions
+  - name: Contracts
+  - name: Notifications
+  - name: Dashboard
+  - name: Reports
+  - name: Automation
+  - name: AI
+  - name: Files
+  - name: Admin
+
 paths:
-  /api/v1/auth/login:
+  ###############################################
+  # AUTHENTICATION
+  ###############################################
+  /auth/login:
     post:
-      summary: Login
+      tags: [Auth]
+      summary: Login user and generate tokens
       requestBody:
         required: true
       responses:
         '200':
+          description: Login successful
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+      responses:
+        '201':
+          description: User created
+
+  /auth/refresh-token:
+    post:
+      tags: [Auth]
+      summary: Generate new access token via refresh token
+      responses:
+        '200':
+          description: Token refreshed
+
+  ###############################################
+  # USERS
+  ###############################################
+  /users:
+    get:
+      tags: [Users]
+      summary: Get all users
+      responses:
+        '200':
+          description: List of users
+    post:
+      tags: [Users]
+      summary: Create new user
+      responses:
+        '201':
+          description: User created
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user by ID
+      responses:
+        '200':
+          description: User found
+    patch:
+      tags: [Users]
+      summary: Update user details
+      responses:
+        '200':
+          description: User updated
+    delete:
+      tags: [Users]
+      summary: Delete a user
+      responses:
+        '200':
+          description: User removed
+
+  /users/{id}/subordinates:
+    get:
+      tags: [Users]
+      summary: Get reporting team members
+      responses:
+        '200':
+          description: Team hierarchy
+
+  ###############################################
+  # CLIENTS
+  ###############################################
+  /clients:
+    get:
+      tags: [Clients]
+      summary: Get all clients
+      responses:
+        '200':
           description: OK
+    post:
+      tags: [Clients]
+      summary: Create a client
+      responses:
+        '201':
+          description: Client created
+
+  /clients/{id}:
+    get:
+      tags: [Clients]
+      summary: Get client by ID
+      responses:
+        '200': { description: Client found }
+    patch:
+      tags: [Clients]
+      summary: Update client
+      responses:
+        '200': { description: Client updated }
+    delete:
+      tags: [Clients]
+      summary: Delete client
+      responses:
+        '200': { description: Client deleted }
+
+  /clients/{id}/activity:
+    get:
+      tags: [Clients]
+      summary: List all interactions and activity for a client
+      responses:
+        '200': { description: Activity timeline }
+
+  ###############################################
+  # CONTACT PERSONS (WITHIN CLIENT)
+  ###############################################
+  /clients/{clientId}/contacts:
+    get:
+      tags: [Contacts]
+      summary: Get all contact persons for a client
+      responses:
+        '200': { description: Contact list }
+    post:
+      tags: [Contacts]
+      summary: Add a new contact person
+      responses:
+        '201': { description: Contact created }
+
+  /clients/{clientId}/contacts/{contactId}:
+    patch:
+      tags: [Contacts]
+      summary: Update contact person
+      responses:
+        '200': { description: Contact updated }
+    delete:
+      tags: [Contacts]
+      summary: Delete contact person
+      responses:
+        '200': { description: Contact removed }
+
+  ###############################################
+  # LEADS / PIPELINE
+  ###############################################
+  /leads:
+    get:
+      tags: [Leads]
+      summary: Get all leads
+      responses:
+        '200': { description: Leads fetched }
+    post:
+      tags: [Leads]
+      summary: Create a new lead
+      responses:
+        '201': { description: Lead created }
+
+  /leads/{id}:
+    get:
+      tags: [Leads]
+      summary: Get lead by ID
+      responses:
+        '200': { description: Lead found }
+    patch:
+      tags: [Leads]
+      summary: Update lead fields
+      responses:
+        '200': { description: Lead updated }
+    delete:
+      tags: [Leads]
+      summary: Delete lead
+      responses:
+        '200': { description: Lead removed }
+
+  /leads/{id}/move:
+    post:
+      tags: [Leads]
+      summary: Move lead to another pipeline stage
+      responses:
+        '200': { description: Lead moved }
+
+  ###############################################
+  # INTERACTIONS (CALLS, EMAILS, MEETINGS)
+  ###############################################
+  /interactions:
+    get:
+      tags: [Interactions]
+      summary: List all interactions
+      responses:
+        '200': { description: OK }
+    post:
+      tags: [Interactions]
+      summary: Log new interaction (with file upload)
+      responses:
+        '201': { description: Created }
+
+  /interactions/{id}:
+    get:
+      tags: [Interactions]
+      summary: Get interaction
+      responses:
+        '200': { description: Found }
+    patch:
+      tags: [Interactions]
+      summary: Update interaction
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Interactions]
+      summary: Delete interaction
+      responses:
+        '200': { description: Deleted }
+
+  ###############################################
+  # CONTRACTS / DOCUMENTS
+  ###############################################
+  /contracts:
+    get:
+      tags: [Contracts]
+      summary: Get all contracts
+      responses:
+        '200': { description: OK }
+    post:
+      tags: [Contracts]
+      summary: Upload a contract with metadata
+      responses:
+        '201': { description: Created }
+
+  /contracts/{id}:
+    get:
+      tags: [Contracts]
+    patch:
+      tags: [Contracts]
+    delete:
+      tags: [Contracts]
+
+  ###############################################
+  # NOTIFICATIONS
+  ###############################################
+  /notifications:
+    get:
+      tags: [Notifications]
+      summary: Get logged-in user notifications
+
+  /notifications/read-all:
+    post:
+      tags: [Notifications]
+      summary: Mark all notifications as read
+
+  ###############################################
+  # DASHBOARD
+  ###############################################
+  /dashboard/overview:
+    get:
+      tags: [Dashboard]
+      summary: Get KPI summary for dashboard
+
+  /dashboard/activity:
+    get:
+      tags: [Dashboard]
+      summary: Recent activities feed
+
+  ###############################################
+  # REPORTS
+  ###############################################
+  /reports/sales:
+    get:
+      tags: [Reports]
+      summary: Sales funnel and analytics
+
+  /reports/clients:
+    get:
+      tags: [Reports]
+      summary: Client trends & segmentation
+
+  /reports/export/pdf:
+    get:
+      tags: [Reports]
+      summary: Export report as PDF
+
+  /reports/export/excel:
+    get:
+      tags: [Reports]
+      summary: Export report as Excel
+
+  ###############################################
+  # AUTOMATION / WORKFLOWS
+  ###############################################
+  /automation/rules:
+    get:
+      tags: [Automation]
+      summary: List all automation rules
+    post:
+      tags: [Automation]
+      summary: Create automation rule
+
+  /automation/rules/{id}:
+    patch:
+      tags: [Automation]
+      summary: Update rule
+    delete:
+      tags: [Automation]
+      summary: Delete rule
+
+  ###############################################
+  # AI PLACEHOLDERS
+  ###############################################
+  /ai/lead-score:
+    post:
+      tags: [AI]
+      summary: AI scoring of lead
+      responses:
+        '200': { description: Completed }
+
+  /ai/summarize-notes:
+    post:
+      tags: [AI]
+      summary: Summarize meeting notes
+      responses:
+        '200': { description: Summary }
+
+  /ai/recommend-next-step:
+    post:
+      tags: [AI]
+      summary: Recommend next CRM action
+      responses:
+        '200': { description: Recommendation }
+
+  ###############################################
+  # FILE UPLOAD
+  ###############################################
+  /files/upload:
+    post:
+      tags: [Files]
+      summary: Upload file using Multer
+      responses:
+        '201': { description: Uploaded }
+
+  ###############################################
+  # ADMIN (ROLES & PERMISSIONS)
+  ###############################################
+  /admin/roles:
+    get:
+      tags: [Admin]
+      summary: Get all roles
+    post:
+      tags: [Admin]
+      summary: Create role
+
+  /admin/roles/{id}:
+    patch:
+      tags: [Admin]
+      summary: Update role
+    delete:
+      tags: [Admin]
+      summary: Delete role
+
+  /admin/permissions:
+    get:
+      tags: [Admin]
+      summary: Get all permissions

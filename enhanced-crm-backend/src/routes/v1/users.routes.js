@@ -1,11 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const userCtrl = require('../../controllers/user.controller');
-const auth = require('../../middlewares/auth.middleware');
-const role = require('../../middlewares/role.middleware');
+const expressUser = require('express');
+const userRouter = expressUser.Router();
+const UserController = require('../../controllers/user.controller');
+const auth = require('../../middlewares/permission.middleware');
+const paginate = require('../../middlewares/paginate.middleware');
 
-router.get('/me', auth, userCtrl.getProfile);
-router.get('/', auth, role(['Admin', 'Manager']), userCtrl.list);
-router.post('/', auth, role(['Admin']), userCtrl.create);
 
-module.exports = router;
+userRouter.get('/', auth('users:read'), paginate, UserController.getUsers);
+userRouter.get('/:id', auth('users:read'), UserController.getUserById);
+userRouter.post('/', auth('users:create'), UserController.createUser);
+userRouter.put('/:id', auth('users:update'), UserController.updateUser);
+userRouter.delete('/:id', auth('users:delete'), UserController.deleteUser);
+
+module.exports = userRouter
