@@ -1,9 +1,9 @@
 const expressLead = require('express')
 const leadRouter = expressLead.Router()
-const LeadController = require('../controllers/lead.controller')
-const authLead = require('../middlewares/permission.middleware')
-const paginateLead = require('../middlewares/paginate.middleware')
-const activityLogLead = require('../middlewares/activityLog.middleware')
+const LeadController = require('../../controllers/lead.controller')
+const authLead = require('../../middlewares/permission.middleware')
+const paginateLead = require('../../middlewares/paginate.middleware')
+const activityLogLead = require('../../middlewares/activityLog.middleware')
 
 leadRouter.get(
   '/',
@@ -29,6 +29,13 @@ leadRouter.delete(
   authLead('leads:delete'),
   activityLogLead('lead', 'delete'),
   LeadController.deleteLead
+)
+
+leadRouter.patch(
+  '/:id/move',
+  authLead('leads:update'),
+  activityLogLead('lead', 'move'),
+  LeadController.moveLead
 )
 
 module.exports = leadRouter

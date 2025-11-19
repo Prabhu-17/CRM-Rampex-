@@ -1,9 +1,9 @@
 const expressContact = require('express')
 const contactRouter = expressContact.Router()
-const ContactController = require('../controllers/contact.controller')
-const authContact = require('../middlewares/permission.middleware')
-const paginateContact = require('../middlewares/paginate.middleware')
-const activityLogContact = require('../middlewares/activityLog.middleware')
+const ContactController = require('../../controllers/contact.controller')
+const authContact = require('../../middlewares/permission.middleware')
+const paginateContact = require('../../middlewares/paginate.middleware')
+const activityLogContact = require('../../middlewares/activityLog.middleware')
 
 contactRouter.get(
   '/',

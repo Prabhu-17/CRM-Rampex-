@@ -1,7 +1,7 @@
 const Lead = require('../models/Lead')
 const eventsLead = require('../events/emitter')
 
-exports.list = async (req, res, next) => {
+exports.getAllLeads = async (req, res, next) => {
   try {
     const { page = 1, limit = 25, q, stage } = req.query
     const filter = {}
@@ -21,7 +21,7 @@ exports.list = async (req, res, next) => {
   }
 }
 
-exports.create = async (req, res, next) => {
+exports.createLead = async (req, res, next) => {
   try {
     const lead = await Lead.create({
       ...req.body,
@@ -34,7 +34,7 @@ exports.create = async (req, res, next) => {
   }
 }
 
-exports.get = async (req, res, next) => {
+exports.getLeadById = async (req, res, next) => {
   try {
     const lead = await Lead.findById(req.params.id).lean()
     if (!lead) return res.status(404).json({ message: 'Not found' })
@@ -44,7 +44,7 @@ exports.get = async (req, res, next) => {
   }
 }
 
-exports.update = async (req, res, next) => {
+exports.updateLead = async (req, res, next) => {
   try {
     const lead = await Lead.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -57,7 +57,7 @@ exports.update = async (req, res, next) => {
   }
 }
 
-exports.remove = async (req, res, next) => {
+exports.deleteLead = async (req, res, next) => {
   try {
     await Lead.findByIdAndDelete(req.params.id)
     res.status(204).end()
@@ -66,7 +66,7 @@ exports.remove = async (req, res, next) => {
   }
 }
 
-exports.move = async (req, res, next) => {
+exports.moveLead = async (req, res, next) => {
   try {
     const { pipelineId, stage } = req.body
     const lead = await Lead.findByIdAndUpdate(

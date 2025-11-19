@@ -1,9 +1,9 @@
 const expressInteraction = require('express')
 const interactionRouter = expressInteraction.Router()
-const InteractionController = require('../controllers/interaction.controller')
-const authInteraction = require('../middlewares/permission.middleware')
-const paginateInteraction = require('../middlewares/paginate.middleware')
-const activityLogInteraction = require('../middlewares/activityLog.middleware')
+const InteractionController = require('../../controllers/interaction.controller')
+const authInteraction = require('../../middlewares/permission.middleware')
+const paginateInteraction = require('../../middlewares/paginate.middleware')
+const activityLogInteraction = require('../../middlewares/activityLog.middleware')
 
 interactionRouter.get(
   '/',
@@ -15,6 +15,11 @@ interactionRouter.get(
   '/:id',
   authInteraction('interactions:read'),
   InteractionController.getInteractionById
+)
+interactionRouter.get(
+  '/client/:clientId',
+  authInteraction('interactions:read'),
+  InteractionController.listForClient
 )
 interactionRouter.post(
   '/',

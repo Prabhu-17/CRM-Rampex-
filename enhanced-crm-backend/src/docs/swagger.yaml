@@ -49,7 +49,7 @@ paths:
         '201':
           description: User created
 
-  /auth/refresh-token:
+  /auth/refresh:
     post:
       tags: [Auth]
       summary: Generate new access token via refresh token

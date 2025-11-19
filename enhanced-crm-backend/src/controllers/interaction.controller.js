@@ -1,7 +1,7 @@
 const Interaction = require('../models/Interaction')
 const AuditLog = require('../models/AuditLog')
 
-exports.list = async (req, res, next) => {
+exports.getAllInteractions = async (req, res, next) => {
   try {
     const { page = 1, limit = 50 } = req.query
     const items = await Interaction.find({})
@@ -19,7 +19,7 @@ exports.list = async (req, res, next) => {
   }
 }
 
-exports.create = async (req, res, next) => {
+exports.createInteraction = async (req, res, next) => {
   try {
     const doc = await Interaction.create({
       ...req.body,
@@ -38,7 +38,7 @@ exports.create = async (req, res, next) => {
   }
 }
 
-exports.get = async (req, res, next) => {
+exports.getInteractionById = async (req, res, next) => {
   try {
     const it = await Interaction.findById(req.params.id).lean()
     if (!it) return res.status(404).json({ message: 'Not found' })
@@ -48,7 +48,7 @@ exports.get = async (req, res, next) => {
   }
 }
 
-exports.update = async (req, res, next) => {
+exports.updateInteraction = async (req, res, next) => {
   try {
     const it = await Interaction.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -67,7 +67,7 @@ exports.update = async (req, res, next) => {
   }
 }
 
-exports.remove = async (req, res, next) => {
+exports.deleteInteraction = async (req, res, next) => {
   try {
     const it = await Interaction.findByIdAndDelete(req.params.id)
     await AuditLog.create({

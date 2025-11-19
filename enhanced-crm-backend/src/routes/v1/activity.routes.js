@@ -1,8 +1,8 @@
 const expressActivity = require('express')
 const activityRoute = expressActivity.Router()
-const ActivityController = require('../controllers/activity.controller')
-const authActivity = require('../middlewares/permission.middleware')
-const paginateActivity = require('../middlewares/paginate.middleware')
+const ActivityController = require('../../controllers/activity.controller')
+const authActivity = require('../../middlewares/permission.middleware')
+const paginateActivity = require('../../middlewares/paginate.middleware')
 
 activityRoute.get(
   '/',
